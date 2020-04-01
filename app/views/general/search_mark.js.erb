@@ -1,0 +1,4 @@
+$('.catalog-search-form .select-box[data-where="catalog"] .select.category').html('<%= j(render 'shared/catalog_form_select_category', models: @models) %>');
+$('.catalog-search-form .select-box[data-where="catalog"] .select.group').html('<%= j(render 'shared/catalog_form_select_group', groups: Grouptree.none) %>');
+
+$(' .select-box[data-where="catalog"] .select.category select.styler, .select-box[data-where="catalog"] .select.group select.styler').styler();

@@ -1,0 +1,65 @@
+<h1>ВАШ ЗАКАЗ ЗАРЕГИСТРИРОВАН.</h1>
+
+<p>
+  В ближайшее время с вами свяжется менеджер компании Машторг для подтверждения заказа.
+</p>
+
+<p>
+  <%= Order::PERSONS[@order.person.to_sym] %>
+</p>
+<p>
+  Имя: <%= @order.name %>
+  <br>
+  Компания: <%= @order.company %>
+  <br>
+  Должность: <%= @order.post %>
+  <br>
+  ИНН: <%= @order.company_details %>
+  <br>
+  Эл. почта: <%= @order.email %>
+  <br>
+  Телефон: <%= @order.phone %>
+</p>
+<p>
+  Комментарии к заказу: <%= @order.comments %>
+</p>
+<p>
+  Доставка: <%= Order::DELIVERIES[@order.delivery.to_sym] %>
+</p>
+<p>
+  Оплата: <%= Order::PAYMENTS[@order.payment.to_sym] %>
+</p>
+
+<table>
+  <tr>
+    <th>Артикул</th>
+    <th>Наименование</th>
+    <th>Цена</th>
+    <th>Кол-во</th>
+    <th>Стоимость</th>
+  </tr>
+  <% @order.cart.line_items.each do |li| %>
+    <tr>
+      <td><%= li.number %></td>
+      <td>
+        <% if li.product_id? && li.product.present? %>
+          <%= link_to li.name, price_products_url(li.product_id) %>
+        <% elsif li.partname.present? %>
+          <%= link_to li.name, part_product_url("#{li.IDMODEL}-#{li.IDGROUP}", li.PARTNAMEID) %>
+        <% else %>
+          <%= li.name %>
+        <% end %>
+      </td>
+      <td><%= li.price %> р.</td>
+      <td><%= li.amount %></td>
+      <td><%= li.price * li.amount %> р.</td>
+    </tr>
+  <% end %>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><strong>Итого:</strong></td>
+    <td><strong><%= @order.cart.line_items.total_sum %> руб.</strong></td>
+  </tr>
+</table>

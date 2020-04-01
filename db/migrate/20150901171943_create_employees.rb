@@ -1,0 +1,14 @@
+class CreateEmployees < ActiveRecord::Migration
+  def change
+    create_table :employees do |t|
+      t.string :name
+      t.string :image
+      t.string :post
+      t.string :work_since
+      t.text :preview
+      t.integer :position, default: 100
+
+      t.timestamps null: false
+    end
+  end
+end

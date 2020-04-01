@@ -1,0 +1,29 @@
+= render 'shared/catalog_form'
+
+= render 'shared/breadcrumbs', bc: [['Каталог', catalog_index_path]]
+
+= render 'menu'
+
+.catalog-page
+
+  .catalog-container
+
+    .column-marks
+      .block-list
+        = render 'marks_list'
+
+        = render 'price_list'
+
+    .column-content
+      .content-with-padding
+
+        %h1 #{@type.name} - #{@mark.NAMESHORT}
+        .models-list
+          - @mark.models.by_type(@type.sort).each do |model|
+            .model{class: cycle('first', '', '', '', '', name: 'models-list')}
+              = link_to image_tag(model_image_path(model)), model_catalog_index_path(model), class: 'image'
+              .name= link_to model.NAMESHORT, model_catalog_index_path(model)
+              .description= model.NAMEFULL
+            = cycle('', '', '', '', '<div class="clear"></div>'.html_safe, name: 'models-list-clear')
+
+

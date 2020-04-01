@@ -1,0 +1,40 @@
+<% type.marks.each_with_index do |mark, i| %>
+
+  <% if i == 0 %>
+    <div class="visible-marks">
+  <% end %>
+  <% if i == (type.sort == 0 ? 4 : type.sort == 1 ? 10 : 8) %>
+    <div class="invisible-marks">
+  <% end %>
+
+  <div class="mark <%= cycle('first', '', name: 'marks-list') %>">
+    <%= link_to image_tag("/picture/logo/#{mark.PATHICON[0..-5].downcase}.png"), mark_catalog_index_path(mark, type: type), class: 'logo' %>
+
+    <div class="content">
+      <div class="name">
+        <%= link_to mark.NAMESHORT, mark_catalog_index_path(mark, type: type) %>
+      </div>
+      <div class="description">
+        <% if mark.PATHWWW? %>
+          <%= link_to mark.NAMEFULL, mark.PATHWWW, target: '_blank' %>
+        <% else %>
+          <%= mark.NAMEFULL %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%= cycle('', '<div class="clear"></div>'.html_safe, name: 'marks-list-clear') %>
+
+  <% if i == (type.sort == 0 ? 3 : type.sort == 1 ? 9 : 7) %>
+    </div>
+  <% end %>
+
+<% end %>
+
+  <div class="clear"></div>
+</div>
+
+<div class="more-marks">
+  <%= link_to "#{image_tag('icons/expand_red.png')}<span>Показать все марки</span>".html_safe, '#' %>
+</div>

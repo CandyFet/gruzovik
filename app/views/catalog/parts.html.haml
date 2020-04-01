@@ -1,0 +1,85 @@
+= render 'shared/catalog_form'
+
+.catalog-list
+  .header.clearfix
+    .title
+      %h1 Каталог запчастей
+    .sort
+      Сортировать по
+      .by
+        %span
+          Названию
+          = image_tag('shapes/expand.png')
+        .orders
+          .item
+            = link_to 'Навзанию', '#'
+          .item
+            = link_to 'Цене', '#'
+    .view
+      = link_to '#', data: {view: 'tile'}, class: "#{'active' if cookies[:catalog_view] == 'tile'}" do
+        Плиткой
+        = image_tag("icons/tile#{'_active' if cookies[:catalog_view] == 'tile'}.png")
+      = link_to '#', data: {view: 'list'}, class: "#{'active' unless cookies[:catalog_view] == 'tile'}" do
+        Списком
+        = image_tag("icons/list#{'_active' unless cookies[:catalog_view] == 'tile'}.png")
+
+  - if cookies[:catalog_view] == 'tile'
+    .tiles.clearfix
+      - @partpictures.each do |partpicture|
+        .item{class: cycle('first', 'second', 'third', 'fourth', 'fifth', name: 'catalog-tile')}
+          .image
+            - if partpicture.partname.info.image?
+              = link_to image_tag(partpicture.partname.info.image.preview), part_product_path("#{partpicture.IDMODEL}-#{partpicture.IDGROUP}", partpicture.partname)
+          .title
+            = link_to partpicture.partname.NAME, part_product_path("#{partpicture.IDMODEL}-#{partpicture.IDGROUP}", partpicture.partname)
+          .bottom
+            - if partpicture.partname.info.price > 0
+              .price
+                = number_with_delimiter(partpicture.partname.info.price)
+                %span.rub Р
+              %span.to-cart-form-catalog-list{class: "catalog-list-tile-part-#{partpicture.partname.ID}"}
+                - if @cart.line_items.pluck(:PARTNAMEID).include?(partpicture.partname.ID)
+                  = link_to '', cart_path, class: 'to-cart in-cart'
+                - else
+                  = link_to '', add_part_cart_path, remote: true, method: :post, data: {id: partpicture.partname.ID, model: partpicture.IDMODEL, grouptree: partpicture.IDGROUP}, class: 'to-cart'
+        = cycle('', '', '', '', '<div class="clear"></div>'.html_safe, name: 'catalog-tile-clear')
+
+  - else
+    %table.standard
+      %thead
+        %tr
+          %th Артикул
+          %th Модель
+          %th Группа
+          %th Наименование
+          %th Стоимость, шт
+          %th
+          %th
+      %tbody
+        - @partpictures.each do |partpicture|
+          %tr{class: cycle('odd', 'even', name: 'catalog-list')}
+            %td.gray= partpicture.partname.NUMBER
+            %td= link_to partpicture.model.NAMESHORT, model_catalog_index_path(partpicture.model)
+            %td= link_to Grouptree.find_by(IDMODEL: partpicture.IDMODEL, GROUPNO: partpicture.IDGROUP).try(:GROUPNAME), product_path("#{partpicture.IDMODEL}-#{partpicture.IDGROUP}", active: partpicture.ID)
+            %td= link_to partpicture.partname.NAME, part_product_path("#{partpicture.IDMODEL}-#{partpicture.IDGROUP}", partpicture.partname)
+            %td.price
+              - if partpicture.partname.info.price > 0
+                %span.nowrap
+                  = number_with_delimiter(partpicture.partname.info.price)
+                  %span.rub Р
+            %td.amount.can-change
+              - if partpicture.partname.info.price > 0
+                %span.nowrap
+                  = link_to image_tag('icons/decrease.png'), '#', data: {value: '-1'}
+                  = text_field_tag :amount, 1
+                  = link_to image_tag('icons/increase.png'), '#', data: {value: '1'}
+            %td.cart.to-cart-form-catalog-list{class: "catalog-list-part-#{partpicture.partname.ID}"}
+              - if partpicture.partname.info.price > 0
+                - if @cart.line_items.pluck(:PARTNAMEID).include?(partpicture.partname.ID)
+                  = link_to '', cart_path, class: 'in-cart'
+                - else
+                  = link_to '', add_part_cart_path, remote: true, method: :post, data: {id: partpicture.partname.ID, model: partpicture.IDMODEL, grouptree: partpicture.IDGROUP}
+
+  .pagination
+    = paginate @partpictures
+

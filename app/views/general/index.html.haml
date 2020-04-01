@@ -1,0 +1,63 @@
+- content_for :under_wrapper do
+  .main-block
+    .main-wrapper.clearfix
+      .left-column
+        - if @promotion.present?
+          .text
+            = raw @promotion.name
+          - if @promotion.slug?
+            .link
+              = link_to 'Подробнее', price_catalog_index_path(promotion: @promotion.slug)
+      .right-column
+        .title
+          = image_tag('icons/settings.png')
+          Подбор запчастей
+        .form.catalog-search-form
+          .select-box{data: {where: 'catalog'}}
+            %form{action: search_path, method: :get, autocomplete: 'off'}
+              = hidden_field_tag :where, 'price'
+              .select.car
+                = select_tag :q_mark, options_from_collection_for_select(Mark.all, 'ID', 'NAMESHORT', params[:q_mark]), include_blank: true, class: 'styler', data: {placeholder: 'МАРКА АВТОМОБИЛЯ', path: search_mark_path}
+              .select.category
+                = render 'shared/catalog_form_select_category', models: Model.none
+              .select.group
+                = render 'shared/catalog_form_select_group', groups: Grouptree.none
+              .input
+                = text_field_tag :q, params[:q], placeholder: 'АРТИКУЛ, КОД ТОВАРА, КЛЮЧЕВОЕ СЛОВО'
+              .action
+                = submit_tag 'Показать', name: nil
+
+  .main-wrapper
+    .main-content
+      .services.clearfix
+        = link_to sto_pages_path, class: 'service', style: "background-image: url(#{image_path('pictures/sto.jpg')})" do
+          .icon= image_tag('icons/big_sto.png')
+          Станция технического обслуживания
+        = link_to carwash_pages_path, class: 'service', style: "background-image: url(#{image_path('pictures/carwashed.jpg')})" do
+          .icon= image_tag('icons/big_carwash.png')
+          Автомойка
+        = link_to rental_pages_path, class: 'service', style: "background-image: url(#{image_path('pictures/rental.jpg')})" do
+          .icon= image_tag('icons/big_rental.png')
+          Аренда коммерческой недвижимости
+
+      .news
+        .container.clearfix
+          .left-column
+            .title Новости
+            .news-block
+              - News.limit(3).each do |news|
+                .item
+                  = link_to news.name, news
+                  .date= l(news.published_at, format: :full_date)
+          - if false
+            .right-column
+              .title Новинки
+              .news-products-slider
+                .carousel
+                  - @products.each do |product|
+                    = link_to price_products_path(product.id), class: 'item' do
+                      .name= product.name
+                      - if product.image?
+                        .image= image_tag(product.image.big)
+                .bullets
+

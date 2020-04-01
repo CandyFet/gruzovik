@@ -1,0 +1,58 @@
+= render 'shared/catalog_form'
+
+= render 'shared/breadcrumbs', bc: [['Каталог', catalog_index_path], ["#{@type.name} - #{@mark.NAMESHORT}", mark_catalog_index_path(@mark, type: @type)]]
+
+= render 'menu'
+
+.catalog-page
+
+  .catalog-container
+
+    .column-marks
+
+      .block-list
+        = render 'marks_list'
+
+        = render 'price_list'
+
+    .column-content
+
+      .content-with-padding
+
+        %h1 Каталог запчастей на #{@model.NAMESHORT}
+
+        .model-info.clearfix
+          .image
+            = image_tag(model_image_path(@model))
+          .content
+            .description= @model.NAMEFULL
+            -#= link_to 'Полное описание модели', '#', class: 'detail-link'
+            = link_to "Все запчасти #{truncate(@model.NAMESHORT, length: 22, separator: ' ', omission: '', escape: false)} с ценами", search_path(q_mark: @mark.ID, q_model: @model.ID), class: 'all-link'
+
+        - if false
+          .model-categories.clearfix
+
+            = link_to 'Части и узлы', '#', class: 'category first'
+            = link_to 'Каталожные группы', '#', class: 'category second'
+            = link_to 'Иллюстрации чертежей', '#', class: 'category'
+
+        .model-content.clearfix
+          .model-left-column
+
+            - @model.grouptrees.root_groups.each do |root_group|
+
+              .block-category
+                .header= root_group.GROUPNAME
+                .categories-list{style: 'display: none;'}
+                  - root_group.children_groups.by_model(@model).each do |subgroup|
+                    = link_to subgroup.GROUPNAME, part_catalog_index_path(model: subgroup.IDMODEL, group: subgroup.GROUPNO), method: :post, remote: true, data: {model: subgroup.IDMODEL, group: subgroup.GROUPNO}
+                  - reset_cycle('categories-list')
+
+          .model-right-column
+            .parts-drawings
+
+
+
+
+
+

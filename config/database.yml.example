@@ -1,0 +1,23 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: root
+  password: root
+  host: localhost
+
+development:
+  <<: *default
+  database: mashoptorg_development
+
+test:
+  adapter: sqlite3
+  database: db/mashoptorg.sqlite3
+  pool: 5
+  timeout: 5000
+
+production:
+  <<: *default
+  database: mashoptorg_development
+  username: root
+  password: root

@@ -1,0 +1,15 @@
+- content_for :above_wrapper do
+  - if false
+    .catalog-form.catalog-search-form
+      %form{action: search_path, method: :get, autocomplete: 'off'}
+        .selects
+          .main-wrapper.clearfix
+            .select.car
+              = select_tag :q_mark, options_from_collection_for_select(Mark.all, 'ID', 'NAMESHORT', params[:q_mark]), include_blank: true, class: 'styler', data: {placeholder: 'МАРКА АВТОМОБИЛЯ', path: search_mark_path}
+            .select.category
+              = render 'shared/catalog_form_select_category', models: @models_search.presence || Model.none
+            .select.group
+              = render 'shared/catalog_form_select_group', groups: @groups_search.presence || Grouptree.none
+        .main-wrapper
+          .input
+            = text_field_tag :q, params[:q], placeholder: 'Артикул, код товара, ключевое слово'

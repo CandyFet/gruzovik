@@ -1,0 +1,30 @@
+= render 'shared/breadcrumbs', bc: [['Вернуться к покупкам', catalog_index_path]]
+
+- content_for :under_wrapper do
+
+  #cart
+    .main-wrapper
+      .header.clearfix
+        .title
+          %h1 Корзина
+        .links
+          = render 'shared/modals_delivery_payment'
+
+    .cart
+      = render 'line_items', cart: @cart, control: true
+
+      .item.total.clearfix
+        .main-wrapper
+          .column.agree
+            .content
+              = link_to 'Перейти к оформлению', new_orders_path, class: 'ordering'
+              = link_to 'Пользовательское соглашение', page_path('agreement'), class: 'terms', target: '_blank'
+          .column.total-name
+            .content Всего к оплате
+          .column.price
+            .content
+              %span.nowrap
+                %span#basket-total-sum
+                  = number_with_delimiter(@cart.line_items.total_sum)
+                %span.rub Р
+

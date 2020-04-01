@@ -1,0 +1,45 @@
+= render 'shared/breadcrumbs', bc: [['Вернуться к покупкам', catalog_index_path]]
+
+- content_for :under_wrapper do
+
+  #cart
+    .main-wrapper
+      .header.clearfix
+        .title
+          %h1 Оформление заказа
+        .links
+          = render 'shared/modals_delivery_payment'
+
+    .order-success
+      .main-wrapper
+        - if @order && @order.valid?
+          .title Ваш заказ зарегистрирован.
+          .hint
+            В ближайшее время с вами свяжется менеджер компании Машторг
+            %br
+            для подтверждения заказа.
+        - else
+          .title Товаров в корзине нет
+          .hint
+            Вы можете перейти в
+            = link_to 'каталог', catalog_index_path
+
+    - if @order && @order.cart.line_items.any?
+      .cart
+        .main-wrapper
+          .cart-header Состав заказа
+
+        = render 'carts/line_items', cart: @order.cart, control: false
+
+        .item.total.clearfix
+          .main-wrapper
+            .column.agree
+              .content
+            .column.total-name
+              .content Всего к оплате
+            .column.price
+              .content
+                %span.nowrap
+                  %span#basket-total-sum
+                    = number_with_delimiter(@order.cart.line_items.total_sum)
+                  %span.rub Р

@@ -1,0 +1,2 @@
+$('#line-item-<%= @li.id %> .column.amount input').val('<%= @li.amount %>');
+$('#basket-total-sum').html('<%= number_with_delimiter(@cart.line_items.total_sum) %>');

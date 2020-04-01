@@ -1,0 +1,11 @@
+= render 'shared/catalog_form'
+
+.simple-page
+  %h1= @page.name
+
+  -#= render 'menu_company'
+
+  - if @page.image?
+    .image= link_to image_tag(@page.image.big), @page.image.url, data: {lightbox: 'main-image'}
+
+  .editor-text= raw @page.content

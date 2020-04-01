@@ -1,0 +1,91 @@
+= render 'shared/breadcrumbs', bc: [['Вернуться к покупкам', catalog_index_path]]
+
+- content_for :under_wrapper do
+
+  #cart
+    .main-wrapper
+      .header.clearfix
+        .title
+          %h1 Оформление заказа
+        .links
+          = render 'shared/modals_delivery_payment'
+
+    = form_for @order, html: {class: 'order-form', autocomplete: 'off'} do |f|
+      .order-main-form
+        .main-wrapper.clearfix
+          - if @order.errors.any?
+            .errors Не все обязательные поля заполнены!
+          .left-column
+            .person
+              = link_to 'Юридическое лицо', '#', class: "#{'active' if f.object.person == 'entity'}"
+              = link_to 'Физическое лицо', '#', class: "#{'active' if f.object.person == 'individual'}"
+              .buttons
+                = f.radio_button :person, :entity
+                = f.radio_button :person, :individual
+            .field
+              = f.text_field :name, placeholder: 'ФИО', class: 'individual'
+            .field
+              = f.text_field :company, placeholder: 'НАЗВАНИЕ КОМПАНИИ'
+            .field
+              = f.text_field :post, placeholder: 'ДОЛЖНОСТЬ'
+            .field
+              = f.text_field :company_details, placeholder: 'ИНН'
+            .field
+              = f.text_field :email, placeholder: 'E-MAIL', class: 'individual'
+            .field
+              = f.text_field :phone, placeholder: 'ТЕЛЕФОН', class: 'individual'
+            .field
+              = f.text_field :comments, placeholder: 'КОММЕНТАРИИ К ЗАКАЗУ', class: 'individual'
+            .field
+              = f.file_field :file, placeholder: 'Прикрепить заявку', class: 'individual styler', data: {placeholder: "#{@order.file.present? ? @order.file.filename : 'Прикрепить заявку'}"}
+              = f.hidden_field :file_cache
+          .right-column
+            .phone.clearfix
+              Вы также можете оформить заказ по телефону:
+              .item
+                .icon= image_tag('icons/phone.png')
+                .content
+                  .title Телефон для связи
+                  .value= link_to_tel MainText.get_content('phone', true)
+                  
+            .select-group
+              .title Выбор способа доставки
+              .button
+                = f.radio_button :delivery, :pickup, class: 'styler'
+                = f.label :delivery_pickup, 'Самовывоз'
+              .button
+                = f.radio_button :delivery, :region, class: 'styler'
+                = f.label :delivery_region, 'Доставка по Тюмени'
+              .button
+                = f.radio_button :delivery, :other, class: 'styler'
+                = f.label :delivery_other, 'Доставка в регионы РФ'
+                
+            .select-group
+              .title Способы оплаты
+              .button.clearfix
+                = f.radio_button :payment, :bill, class: 'styler'
+                = f.label :payment_bill, 'По выставленному счету, счет будет выставлен вам после подтверждения вашего заказа Менеджером компании Машторг'
+              .button
+                = f.radio_button :payment, :cash, class: 'styler'
+                = f.label :payment_cash, 'Оплата наличными при получении'
+
+      .cart
+        .main-wrapper
+          .cart-header Состав заказа
+
+        = render 'carts/line_items', cart: @cart, control: true
+
+        .item.total.clearfix
+          .main-wrapper
+            .column.agree
+              .content
+                = f.submit 'Отправить заказ'
+                = link_to 'Пользовательское соглашение', page_path('agreement'), class: 'terms', target: '_blank'
+            .column.total-name
+              .content Всего к оплате
+            .column.price
+              .content
+                %span.nowrap
+                  %span#basket-total-sum
+                    = number_with_delimiter(@cart.line_items.total_sum)
+                  %span.rub Р

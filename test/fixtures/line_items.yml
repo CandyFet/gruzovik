@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name_id: 
+  cart_id: 
+  number: MyString
+  amount: 1
+  price: 1
+  model_id: 
+  partname_id: 
+
+two:
+  name_id: 
+  cart_id: 
+  number: MyString
+  amount: 1
+  price: 1
+  model_id: 
+  partname_id: 

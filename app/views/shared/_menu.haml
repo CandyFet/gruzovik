@@ -1,0 +1,25 @@
+#menu
+  .main-wrapper.clearfix
+    .all-site
+      = link_to price_catalog_index_path do
+        = image_tag('icons/expand_menu.png')
+        Каталог запчастей
+    .menu
+      %ul
+        %li
+          = link_to 'Главная', root_path
+        %li
+          = link_to 'О компании', company_path
+        %li
+          = link_to 'Акции', promotions_path
+        %li
+          = link_to 'Новости', news_index_path
+        %li
+          = link_to 'СТО', sto_pages_path
+        %li
+          = link_to 'Автомойка', carwash_pages_path
+        %li
+          = link_to 'Аренда', rental_pages_path
+        %li.last
+          = link_to 'Контакты', page_path('contacts')
+

@@ -1,0 +1,147 @@
+= render 'shared/catalog_form'
+
+= render 'shared/breadcrumbs', bc: [['Каталог', catalog_index_path], ["#{@type.name} - #{@mark.NAMESHORT}", mark_catalog_index_path(@mark, type: @type)], [@model.NAMESHORT, model_catalog_index_path(@model)]]
+
+- content_for :under_wrapper do
+
+  .product-detail
+    .main-wrapper
+
+      %h1 #{@grouptree.GROUPNAME} #{@model.NAMESHORT}
+
+      .skus
+        %span
+          Артикул
+          %strong 365 845
+        %span
+          Код товара
+          %strong 985 23 65
+        %span
+          Каталожная группа
+          %strong Ходовая часть
+
+    .main-information
+      .main-wrapper.clearfix
+        .slider-column
+          .slider
+            .carousel
+              - 5.times do |i|
+                .item{id: "product-slide-#{i}"}
+                  = link_to image_tag('examples/product.jpg'), image_path('examples/product.jpg'), data: {lightbox: 'product-images'}
+          .thumbs-wrapper
+            - 5.times do |i|
+              = link_to "#product-slide-#{i}", class: "#{'selected' if i.zero?}" do
+                .bgr
+                .image= image_tag('examples/product_thumb.png')
+                .line
+        .info-column
+          .title Технические характеристики
+          %ul
+            %li
+              %span.name
+                %span.wrap Торговая марка
+              %span.value КАМАЗ
+            %li
+              %span.name
+                %span.wrap Ширина, м
+              %span.value 20
+            %li
+              %span.name
+                %span.wrap Высота, м
+              %span.value 40
+            %li
+              %span.name
+                %span.wrap Длинна, м
+              %span.value 50
+            %li
+              %span.name
+                %span.wrap Вес, кг
+              %span.value 27
+          .title Описание
+          .editor-text
+            %p Тяговые и динамические характеристики автомобиля, его грузоподъемность и комфорт водителя и пассажиров во время езды обеспечиваются простым, но важным узлом — подвеской. На каких принципах основана работа подвески КАМАЗов?
+        .payment-column
+          .add-to-cart
+            .price
+              = number_with_delimiter(6990)
+              %span.rub Р
+            .price-unit
+              Цена за шт
+            .amount.can-change
+              %span
+                = link_to image_tag('icons/decrease_black.png'), '#', data: {value: '-1'}
+                = text_field_tag :amount, 1
+                = link_to image_tag('icons/increase_black.png'), '#', data: {value: '1'}
+            .to-cart
+              = link_to image_tag('icons/to_cart_white.png'), '#'
+              = link_to 'Добавить', '#'
+            .bottom
+          .link
+            = link_to image_tag('icons/delivery.png'), page_path('delivery')
+            = link_to 'Условия доставки', page_path('delivery')
+          .link
+            = link_to image_tag('icons/payment.png'), page_path('payment')
+            %br
+            = link_to 'Условия оплаты', page_path('payment')
+
+    .main-wrapper
+      .detail-information.clearfix
+        .tabs.clearfix
+          .tab{style: 'width: 165px;'}= link_to 'Применяемость', '#tab-1', class: 'active'
+          .tab{style: 'width: 260px;'}= link_to 'Сопутствующие товары', '#tab-2'
+        .content-tabs
+          #tab-1.content-tab.cleearfix
+            %table.standard
+              %thead
+                %tr
+                  %th Марка
+                  %th Модель
+                  %th Название по автокаталогу
+                  %th Чертеж
+              %tbody
+                - 12.times do |i|
+                  %tr{class: cycle('odd', 'even', name: 'tab-1-list')}
+                    %td.gray КамАЗ
+                    %td.gray КамАЗ-436
+                    %td= link_to 'Наименование товара вполне может не умещаться в одну строку, а то и в две или три', '#'
+                    %td.gray Двигатель / система питания
+          #tab-2.content-tab.cleafix
+            .left-column
+              %table.standard
+                %thead
+                  %tr
+                    %th №
+                    %th Номер
+                    %th Название
+                    %th Кол-во<br>на модель
+                    %th Цена
+                %tbody
+                  - 12.times do |i|
+                    %tr{class: cycle('odd', 'even', name: 'tab-1-list')}
+                      %td= i + 1
+                      %td.gray 375-8402530-01
+                      %td= link_to 'Наименование товара вполне может не умещаться в одну строку, а то и в две или три', '#'
+                      %td.gray 5
+                      %td.price
+                        %span.nowrap
+                          = number_with_delimiter(7890)
+                          %span Р
+            .right-column
+              = link_to image_tag('examples/scheme.png'), image_path('examples/scheme.png'), data: {lightbox: 'scheme'}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+= form_for @carwash, url: forms_carwash_path, remote: true, html: {autocomplete: 'off'} do |f|
+  .input
+    = f.text_field :name, placeholder: 'КОМПАНИЯ'
+  .input
+    = f.text_field :amount, placeholder: 'АВТОПАРК (КОЛ-ВО МАШИН)'
+  .input
+    = f.text_field :fio, placeholder: 'КОНТАКТНОЕ ЛИЦО'
+  .input
+    = f.phone_field :phone, placeholder: 'КОНТАКТНЫЙ ТЕЛЕФОН'
+  .action
+    = submit_tag 'Отправить', name: nil

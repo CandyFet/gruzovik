@@ -1,0 +1,33 @@
+%table.standard.partpictures
+  %thead
+    %tr
+      %th Артикул
+      %th Наименование
+      %th Стоимость, шт
+      %th
+      %th
+  %tbody
+    - products.each do |product|
+      %tr{class: cycle('odd', 'even', name: 'tab-1-list')}
+        %td.gray
+          - if product.number?
+            = link_to product.number, price_products_path(product.id)
+        %td= link_to product.name, price_products_path(product.id)
+        %td.price
+          - if product.price > 0
+            %span.nowrap
+              = number_with_delimiter(product.price)
+              %span.rub Р
+        %td.amount.can-change
+          - if product.price > 0
+            %span.nowrap
+              = link_to image_tag('icons/decrease.png'), '#', data: {value: '-1'}
+              = text_field_tag :amount, 1
+              = link_to image_tag('icons/increase.png'), '#', data: {value: '1'}
+        %td.cart.to-cart-form-catalog-list{class: "catalog-list-part-#{product.id}"}
+          -#- if product.price > 0
+          -#  - if @cart.line_items.pluck(:PARTNAMEID).include?(partpicture.partname.ID)
+          -#    = link_to '', cart_path, class: 'in-cart'
+          -#  - else
+          -#    = link_to '', add_part_cart_path, remote: true, method: :post, data: {id: partpicture.partname.ID, model: partpicture.IDMODEL, grouptree: partpicture.IDGROUP}
+

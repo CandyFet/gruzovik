@@ -1,0 +1,7 @@
+en:
+  date:
+    formats:
+      date_admin: '%d.%m.%Y'
+  time:
+    formats:
+      date_admin: '%d.%m.%Y'

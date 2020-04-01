@@ -1,0 +1,28 @@
+- if defined?(variant) && variant == 2
+  .link
+    = link_to image_tag('icons/delivery.png'), '#modal-delivery', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+    = link_to 'Условия доставки', '#modal-delivery', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+  .link
+    = link_to image_tag('icons/payment.png'), '#modal-payment', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+    %br
+    = link_to 'Условия оплаты', '#modal-payment', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+- else
+  %span
+    = link_to image_tag('icons/delivery_gray.png'), '#modal-delivery', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+    = link_to 'Условия доставки', '#modal-delivery', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+  %span
+    = link_to image_tag('icons/payment_gray.png'), '#modal-payment', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+    = link_to 'Условия оплаты', '#modal-payment', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+
+- delivery = Page.active.find_by(slug: 'delivery')
+- payment = Page.active.find_by(slug: 'payment')
+
+- if delivery.present?
+  #modal-delivery.white-popup.mfp-hide.mfp-with-anim
+    .title= delivery.name
+    .editor-text= raw delivery.content
+
+- if payment.present?
+  #modal-payment.white-popup.mfp-hide.mfp-with-anim
+    .title= payment.name
+    .editor-text= raw payment.content

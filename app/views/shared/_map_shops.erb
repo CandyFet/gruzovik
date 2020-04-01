@@ -1,0 +1,14 @@
+<% if action_name !~ /sto|carwash|rental/ && controller_name !~ /promotions/ && @page.try(:slug) != 'contacts' %>
+
+  <div class="shops-map">
+    <div class="close"><%= image_tag('icons/close.png') %></div>
+    <div id="shops-map"></div>
+  </div>
+
+  <% if true || Rails.env.production? %>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDA_yQ39LCgQP3gcqWvYyOEyU6eHU2cULc"></script>
+
+    <%= render 'pages/map_script', id: 'shops-map', all_shops: true %>
+  <% end %>
+
+<% end %>

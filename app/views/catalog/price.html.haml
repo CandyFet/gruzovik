@@ -1,0 +1,119 @@
+= render 'shared/catalog_form'
+
+- if @lastcategory.present?
+  = render 'shared/breadcrumbs', bc: [['Прайс лист', price_catalog_index_path], [@category.name, price_catalog_index_path(category: @category.id)], [@subcategory.name, price_catalog_index_path(category: @category.id, subcategory: @subcategory.id)], [@lastcategory.name, price_catalog_index_path(category: @category.id, subcategory: @subcategory.id, lastcategory: @lastcategory.id)]]
+- elsif @subcategory.present?
+  = render 'shared/breadcrumbs', bc: [['Прайс лист', price_catalog_index_path], [@category.name, price_catalog_index_path(category: @category.id)], @subcategory.name]
+- elsif @category.present?
+  = render 'shared/breadcrumbs', bc: [['Прайс лист', price_catalog_index_path], @category.name]
+
+= render 'menu'
+
+.catalog-page
+
+  .catalog-container
+
+    .column-marks
+      .block-list
+        = render 'price_list'
+
+        = render 'marks_list'
+
+    .column-content
+      .content-with-padding
+        %h1
+          - if @promotion.present?
+            = @promotion.name
+          - else
+            - if @category.present?
+              = @category.name
+            - if @subcategory.present?
+              \-
+              = @subcategory.name
+            - if @lastcategory.present?
+              \-
+              = @lastcategory.name
+
+        - if @category_image.present? || @category_description.present?
+          .model-info.price-list-info.clearfix
+            - if @category_image.present?
+              .image
+                = image_tag(@category_image.thumb)
+            - if @category_description.present?
+              .content{class: "#{'without-image' if @category_image.blank?}"}
+                .description
+                  .editor-text= raw @category_description
+                -#= link_to 'Полное описание модели', '#', class: 'detail-link'
+                -#= link_to "Все запчасти #{truncate(@model.NAMESHORT, length: 22, separator: ' ', omission: '', escape: false)} с ценами", search_path(q_mark: @mark.ID, q_model: @model.ID), class: 'all-link'
+
+        - if @promotion.present? && @promotion.image?
+          = image_tag(@promotion.image.big, style: 'margin-bottom: 20px;')
+
+        - if @promotion && @promotion.content?
+          .editor-text= raw @promotion.content
+
+      .catalog-list.background-gray
+        .header.clearfix
+          .sort
+            Сортировать по
+            .by
+              %span
+                - if params[:order] == 'sku'
+                  Артикулу
+                - elsif params[:order] == 'price'
+                  Цене
+                - else
+                  Названию
+                = image_tag('shapes/expand.png')
+              .orders
+                - unless params[:order] == 'sku'
+                  .item
+                    = link_to 'Артикулу', params.merge(order: 'sku', page: nil)
+                - unless params[:order].blank?
+                  .item
+                    = link_to 'Навзанию', params.merge(order: nil, page: nil)
+                - unless params[:order] == 'price'
+                  .item
+                    = link_to 'Цене', params.merge(order: 'price', page: nil)
+
+      %table.standard.partpictures
+        %thead
+          %tr
+            %th Артикул
+            %th Наименование
+            %th Стоимость, шт
+            %th
+            %th
+        %tbody
+          - @products.each do |product|
+            %tr{class: cycle('odd', 'even', name: 'tab-1-list')}
+              %td.gray
+                - if product.number?
+                  = link_to product.number, price_products_path(product.id)
+              %td= link_to product.name, price_products_path(product.id)
+              %td.price
+                - if product.price > 0
+                  %span.nowrap
+                    = number_with_delimiter(product.price)
+                    %span.rub Р
+              %td.amount.can-change
+                - if product.price > 0
+                  %span.nowrap
+                    = link_to image_tag('icons/decrease.png'), '#', data: {value: '-1'}
+                    = text_field_tag :amount, 1
+                    = link_to image_tag('icons/increase.png'), '#', data: {value: '1'}
+              %td.cart.to-cart-form-catalog-list{class: "catalog-list-part-#{product.id}"}
+                - if product.price > 0
+                  - if @cart.line_items.pluck(:product_id).include?(product.id)
+                    = link_to '', cart_path, class: 'in-cart'
+                  - else
+                    = link_to '', add_part_cart_path, remote: true, method: :post, data: {product_id: product.id}
+
+      .pagination
+        = paginate @products
+
+      - if @category_description_bottom.present?
+        .content-description-bottom
+          .description
+            .editor-text= raw @category_description_bottom
+

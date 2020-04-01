@@ -1,0 +1,3 @@
+.page-menu
+  = link_to 'О компании', company_path, class: "#{'active' if action_name == 'company'}"
+  = link_to 'Сотрудники', employees_path, class: "#{'active' if action_name == 'employees'}"

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  post: MyString
+  work_since: MyString
+  preview: MyText
+  position: 1
+
+two:
+  name: MyString
+  post: MyString
+  work_since: MyString
+  preview: MyText
+  position: 1

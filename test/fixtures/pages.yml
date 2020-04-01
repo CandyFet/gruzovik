@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+first:
+  name: First page
+  slug: first-page
+  is_page: true
+  image: image_name
+  content: First page content
+
+not_page:
+  name: This is not a page
+  slug: not-page
+  is_page: false
+  image: image_name
+  content: Not page content

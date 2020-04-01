@@ -1,0 +1,17 @@
+ru:
+  date:
+    formats:
+      full_date: "%d %B'%Y"
+      long: "%d.%m.%Y"
+      standart: "%d %B, %Y"
+      short: "%d %B в %H:%M"
+      date: "%d.%m.%Y"
+  time:
+    formats:
+      full_date: "%d %B'%Y"
+      date: "%d.%m.%Y"
+      long: "%d %B %Y в %H:%M"
+      standart: "%d %B %Y, %H:%M"
+      short: "%d %B в %H:%M"
+  simple_captcha:
+    placeholder: ''

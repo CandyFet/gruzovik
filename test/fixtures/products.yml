@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  category_id: 
+  uid: MyString
+  price: 1
+  residue: 1
+  image: MyString
+  description: MyText
+  similars: MyText
+  width: 1.5
+  height: 1.5
+  length: 1.5
+  file_name: MyString
+
+two:
+  name: MyString
+  category_id: 
+  uid: MyString
+  price: 1
+  residue: 1
+  image: MyString
+  description: MyText
+  similars: MyText
+  width: 1.5
+  height: 1.5
+  length: 1.5
+  file_name: MyString

@@ -1,0 +1,5 @@
+- if subcategories.any?
+  = select_tag :q_subcategory, options_from_collection_for_select(subcategories, 'id', 'name', params[:q_subcategory]), include_blank: 'Все категории', class: 'styler', data: {placeholder: 'КАТЕГОРИЯ', path: search_price_lastcategory_path}
+- else
+  = select_tag :q_subcategory, options_from_collection_for_select(subcategories, 'id', 'name'), include_blank: true, class: 'styler', data: {placeholder: 'КАТЕГОРИЯ', path: search_price_lastcategory_path}, disabled: true
+

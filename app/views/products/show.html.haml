@@ -1,0 +1,129 @@
+= render 'shared/catalog_form'
+
+= render 'shared/breadcrumbs', bc: [['Каталог', catalog_index_path], ["#{@type.name} - #{@mark.NAMESHORT}", mark_catalog_index_path(@mark, type: @type)], [@model.NAMESHORT, model_catalog_index_path(@model)]]
+
+= render 'catalog/menu'
+
+.catalog-page
+
+  .catalog-container
+
+    .column-marks
+
+      .block-list
+        = render 'catalog/marks_list'
+
+        = render 'catalog/price_list'
+
+    .column-content
+
+      .product-detail
+
+        .content-with-padding
+
+          %h1 #{@grouptree.GROUPNAME} #{@model.NAMESHORT}
+
+        .detail-information.clearfix
+          .content-tabs
+            .content-tab.cleearfix
+              .partpicture-image-wrapper
+                .partpicture-image
+                  - img_xy = FastImage.size(Rails.root.to_s + '/public' + model_drawing_image_path(@grouptree))
+                  - if img_xy.present?
+                    - img_x_percent = img_xy.first.to_f > 673 ? img_x_percent = img_xy.first.to_f / 673 : 1
+                    - img_y_percent = img_xy.second.to_f / fix_dimension(img_xy.second, img_x_percent)
+                    = image_tag(model_drawing_image_path(@grouptree))
+                    - @grouptree.partpictures.by_model(@model).includes(:partname).each do |partpicture|
+                      - if partpicture.rectangles.any?
+
+                        - partpicture.rectangles.each do |rect|
+                          - part_x = rect.get_x_width
+                          - part_y = rect.get_y_height
+                          - if part_x.present? && part_y.present?
+                            .part{class: "#{'active' if params[:active] == partpicture.ID.to_s}", style: "left: #{fix_dimension(part_x[:x], img_x_percent)}px; top: #{fix_dimension(part_y[:y], img_y_percent)}px; width: #{fix_dimension(part_x[:width], img_x_percent)}px; height: #{fix_dimension(part_y[:height], img_y_percent)}px;", title: partpicture.partname.NAME, data: {id: partpicture.ID}}
+
+              .content-with-padding
+                .important-message
+                  %p
+                    ВНИМАНИЕ! Электронный автокаталог запчастей предназначен для справочных целей! Наша компания продает не все запчасти, представленные в этом списке.
+                  %p
+                    Если запчасть есть в активной продаже, то в соотвествующем столбце указана цена данного товара.
+                    %br
+                    Если цена на запчасть не указана, значит на данный момент компания не осуществляет ее продажу.
+
+              .catalog-list.background-gray
+                .header.clearfix
+                  .sort
+                    Сортировать по
+                    .by
+                      %span
+                        - if params[:order] == 'sku'
+                          Артикулу
+                        - elsif params[:order] == 'price'
+                          Цене
+                        - else
+                          Названию
+                        = image_tag('shapes/expand.png')
+                      .orders
+                        - unless params[:order] == 'sku'
+                          .item
+                            = link_to 'Артикулу', params.merge(order: 'sku')
+                        - unless params[:order].blank?
+                          .item
+                            = link_to 'Навзанию', params.merge(order: nil)
+                        - unless params[:order] == 'price'
+                          .item
+                            = link_to 'Цене', params.merge(order: 'price')
+
+              %table.standard.partpictures
+                %thead
+                  %tr
+                    %th Артикул
+                    %th Наименование
+                    %th Стоимость, шт
+                    %th
+                    %th
+                %tbody
+                  - @partpictures.each do |partpicture|
+                    %tr{class: "#{'active' if params[:active] == partpicture.ID.to_s} #{cycle('odd', 'even', name: 'tab-1-list')}", id: dom_id(partpicture)}
+                      %td.gray= link_to partpicture.partname.NUMBER, '#', class: 'check-image'
+                      %td= link_to partpicture.partname.NAME, part_product_path("#{@model.ID}-#{@grouptree.id}", partpicture.partname)
+                      %td.price
+                        - if partpicture.partname.info.price > 0
+                          %span.nowrap
+                            = number_with_delimiter(partpicture.partname.info.price)
+                            %span.rub Р
+                      %td.amount.can-change
+                        - if partpicture.partname.info.price > 0
+                          %span.nowrap
+                            = link_to image_tag('icons/decrease.png'), '#', data: {value: '-1'}
+                            = text_field_tag :amount, 1
+                            = link_to image_tag('icons/increase.png'), '#', data: {value: '1'}
+                      %td.cart.to-cart-form-catalog-list{class: "catalog-list-part-#{partpicture.partname.ID}"}
+                        - if partpicture.partname.info.price > 0
+                          - if @cart.line_items.pluck(:PARTNAMEID).include?(partpicture.partname.ID)
+                            = link_to '', cart_path, class: 'in-cart'
+                          - else
+                            = link_to '', add_part_cart_path, remote: true, method: :post, data: {id: partpicture.partname.ID, model: partpicture.IDMODEL, grouptree: partpicture.IDGROUP}
+
+    - if params[:active].present?
+      :javascript
+        $('.partpicture-image img').load(function() {
+          $('html, body').animate({scrollTop: $("#partpicture_#{params[:active]}").offset().top - 70}, 300);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

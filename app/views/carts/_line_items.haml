@@ -1,0 +1,30 @@
+- cart.line_items.each do |li|
+  .item.clearfix{id: "line-item-#{li.id}"}
+    .main-wrapper
+      .column.image
+        - if li.product_id?
+          - if li.product.present? && li.product.image?
+            .content= link_to image_tag(li.product.image.small), price_products_path(li.product_id)
+        - else
+          - if li.partname.present? && li.partname.info.image?
+            .content= link_to image_tag(li.partname.info.image.small), part_product_path("#{li.IDMODEL}-#{li.IDGROUP}", li.PARTNAMEID)
+      .column.name
+        - if li.product_id?
+          .content= link_to li.name, price_products_path(li.product_id)
+        - else
+          .content= link_to li.name, part_product_path("#{li.IDMODEL}-#{li.IDGROUP}", li.PARTNAMEID)
+      .column.amount.can-change
+        - if control
+          .content
+            %span.nowrap
+              = link_to image_tag('icons/decrease_black.png'), '#', data: {value: '-1'}
+              = text_field_tag :amount, li.amount, autocomplete: 'off', data: {url: change_amount_cart_path(li)}
+              = link_to image_tag('icons/increase_black.png'), '#', data: {value: '1'}
+      .column.price
+        .content
+          %span.nowrap
+            = number_with_delimiter(li.price)
+            %span.rub Р
+      .column.remove
+        - if control
+          .content= link_to image_tag('icons/remove.png'), remove_part_cart_path(id: li.id), remote: true, method: :delete

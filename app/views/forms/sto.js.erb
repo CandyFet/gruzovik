@@ -1,0 +1,5 @@
+<% if @sto.valid? %>
+  $('.main-block .right-column .form').html('<div class="success">Спасибо за Вашу заявку!</div>');
+<% else %>
+  $('.main-block .right-column .form').html('<%= j(render 'forms/form_sto') %>');
+<% end %>

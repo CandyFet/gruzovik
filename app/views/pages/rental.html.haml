@@ -1,0 +1,41 @@
+- content_for :under_wrapper do
+  .main-block.page-rental
+    .main-wrapper.clearfix
+      .left-column.inner
+        .text
+          Аренда коммерческой недвижимости
+        .editor-text.main-scrollable{style: 'height: 100px;'}
+          = raw Page.get_content('rental')
+        .bottom
+          .info-blocks.clearfix
+            - if MainText.has_content?('rental_phone')
+              .info-block
+                .icon
+                  = image_tag('icons/phone_red.png')
+                .content
+                  Телефон
+                  .value
+                    = raw MainText.get_content('sto_phone')
+            - if MainText.has_content?('rental_address')
+              .info-block
+                .icon
+                  = image_tag('icons/location_red.png')
+                .content
+                  Адрес
+                  .value
+                    = raw MainText.get_content('rental_address')
+          .slider
+            .carousel
+              - RentalImage.all.each do |image|
+                .item
+                  = link_to image_tag(image.file.thumb), image.file.url, data: {lightbox: 'rental-images'}
+            .arrow.prev
+            .arrow.next
+
+      .right-column.black
+        .title Форма обратной связи
+        .hint После заполнения формы с вами свяжется менеджер по указанному телефону для уточнения информации.
+        .form
+          = render 'forms/form_rental'
+
+  = render 'map'

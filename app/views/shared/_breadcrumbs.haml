@@ -1,0 +1,11 @@
+.breadcrumbs
+  - bc = bc.map { |c| c.is_a?(Array) ? c.first.present? ? c : nil : c }.compact
+  - bc.each_with_index do |c, i|
+
+    - if c.is_a? Array
+      = link_to c.first, c.second
+    - else
+      %span= c
+
+    - if bc.size != i + 1
+      \/

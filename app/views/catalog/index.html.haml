@@ -1,0 +1,28 @@
+= render 'shared/catalog_form'
+
+= render 'menu'
+
+.catalog-page
+
+  .catalog-container
+
+    .column-marks
+      .block-list
+        = render 'marks_list'
+
+        = render 'price_list'
+
+    .column-content
+      .content-with-padding
+
+        .catalog-type-auto
+          - @types.each_with_index do |type, i|
+            .header
+              .title
+                %h1= type.name
+
+            .marks-list.clearfix{class: "#{'last' if i == 2}"}
+
+              = render 'marks', type: type
+
+              - reset_cycle('marks-list'); reset_cycle('marks-list-clear')

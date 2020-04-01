@@ -1,0 +1,8 @@
+before_script:
+  - gem install bundler
+  - cp config/database.yml.example config/database.yml
+  - bundle install
+
+spec:
+  script:
+    - bundle exec rake test

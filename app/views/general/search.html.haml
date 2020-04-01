@@ -1,0 +1,171 @@
+= render 'shared/catalog_form'
+
+= render 'shared/breadcrumbs', bc: [['Каталог', catalog_index_path]]
+
+= render 'catalog/menu'
+
+.catalog-page
+
+  .catalog-container
+
+    .column-marks
+
+      .block-list
+        = render 'catalog/marks_list'
+
+        = render 'catalog/price_list'
+
+    .column-content
+      .content-with-padding
+
+        %h1 Результат поиска по заданым параметрам
+
+      .catalog-form.catalog-search-form
+        %form{action: search_path, method: :get, autocomplete: 'off'}
+          .main-wrapper
+            .inputs.clearfix
+              .left-column
+                .input
+                  = text_field_tag :q, params[:q], placeholder: 'АРТИКУЛ, КОД ТОВАРА, КЛЮЧЕВОЕ СЛОВО'
+                .buttons
+                  = radio_button_tag :where, :catalog, params[:where] == 'catalog', class: 'styler'
+                  = label_tag :where_catalog, 'Поиск по автокаталогу', style: 'margin-right: 50px;'
+
+                  = radio_button_tag :where, :price, params[:where] == 'price', class: 'styler'
+                  = label_tag :where_price, 'Поиск по прайс листу'
+              .right-column
+                = submit_tag '', name: nil
+          .selects
+            .main-wrapper.clearfix
+
+              .select-box{data: {where: 'catalog'}, style: "#{'display: none;' if params[:where] != 'catalog'}"}
+                .select.car
+                  = select_tag :q_mark, options_from_collection_for_select(Mark.all, 'ID', 'NAMESHORT', params[:q_mark]), include_blank: 'Все марки', class: 'styler', data: {placeholder: 'МАРКА АВТОМОБИЛЯ', path: search_mark_path}
+                .select.category
+                  = render 'shared/catalog_form_select_category', models: @models_search.presence || Model.none
+                .select.group
+                  = render 'shared/catalog_form_select_group', groups: @groups_search.presence || Grouptree.none
+
+              .select-box{data: {where: 'price'}, style: "#{'display: none;' if params[:where] != 'price'}"}
+                .select.car
+                  = select_tag :q_category, options_from_collection_for_select(Category.roots, 'id', 'name', params[:q_category]), include_blank: 'Все категории', class: 'styler', data: {placeholder: 'ГЛАВНАЯ КАТЕГОРИЯ', path: search_price_subcategory_path}
+                .select.category
+                  = render 'shared/catalog_form_select_price_subcategory', subcategories: @subcategories_search.presence || Category.none
+                .select.group
+                  = render 'shared/catalog_form_select_price_lastcategory', lastcategories: @lastcategories_search.presence || Category.none
+
+      .content-with-padding.full
+        .catalog-list-delim
+
+      - if (@partpictures.present? && @partpictures.any?) || (@products.present? && @products.any?)
+
+        .catalog-list.background-gray
+          .header.clearfix
+            .sort
+              Сортировать по
+              .by
+                %span
+                  - if params[:order] == 'sku'
+                    Артикулу
+                  - elsif params[:order] == 'price'
+                    Цене
+                  - else
+                    Названию
+                  = image_tag('shapes/expand.png')
+                .orders
+                  - unless params[:order] == 'sku'
+                    .item
+                      = link_to 'Артикулу', params.merge(order: 'sku')
+                  - unless params[:order].blank?
+                    .item
+                      = link_to 'Навзанию', params.merge(order: nil)
+                  - unless params[:order] == 'price'
+                    .item
+                      = link_to 'Цене', params.merge(order: 'price')
+
+        %table.standard.partpictures
+          %thead
+            %tr
+              %th Артикул
+              %th Наименование
+              %th Стоимость, шт
+              %th
+              %th
+          %tbody
+            - if params[:where] == 'catalog'
+              - @partpictures.each do |partpicture|
+                - next if partpicture.partname.blank?
+                %tr{class: "#{cycle('odd', 'even', name: 'tab-1-list')}"}
+                  %td.gray= link_to partpicture.partname.NUMBER, part_product_path("#{partpicture.IDMODEL}-#{partpicture.IDGROUP}", partpicture.partname)
+                  %td= link_to partpicture.partname.NAME, part_product_path("#{partpicture.IDMODEL}-#{partpicture.IDGROUP}", partpicture.partname)
+                  %td.price
+                    - if partpicture.partname.info.price > 0
+                      %span.nowrap
+                        = number_with_delimiter(partpicture.partname.info.price)
+                        %span.rub Р
+                  %td.amount.can-change
+                    - if partpicture.partname.info.price > 0
+                      %span.nowrap
+                        = link_to image_tag('icons/decrease.png'), '#', data: {value: '-1'}
+                        = text_field_tag :amount, 1
+                        = link_to image_tag('icons/increase.png'), '#', data: {value: '1'}
+                  %td.cart.to-cart-form-catalog-list{class: "catalog-list-part-#{partpicture.partname.ID}"}
+                    - if partpicture.partname.info.price > 0
+                      - if @cart.line_items.pluck(:PARTNAMEID).include?(partpicture.partname.ID)
+                        = link_to '', cart_path, class: 'in-cart'
+                      - else
+                        = link_to '', add_part_cart_path, remote: true, method: :post, data: {id: partpicture.partname.ID, model: partpicture.IDMODEL, grouptree: partpicture.IDGROUP}
+            - else
+              - @products.each do |product|
+                %tr{class: "#{cycle('odd', 'even', name: 'tab-1-list')}"}
+                  %td.gray= link_to product.number, price_products_path(product.id)
+                  %td= link_to product.name, price_products_path(product.id)
+                  %td.price
+                    - if product.price > 0
+                      %span.nowrap
+                        = number_with_delimiter(product.price)
+                        %span.rub Р
+                  %td.amount.can-change
+                    - if product.price > 0
+                      %span.nowrap
+                        = link_to image_tag('icons/decrease.png'), '#', data: {value: '-1'}
+                        = text_field_tag :amount, 1
+                        = link_to image_tag('icons/increase.png'), '#', data: {value: '1'}
+                  %td.cart.to-cart-form-catalog-list{class: "catalog-list-part-#{product.id}"}
+                    - if product.price > 0
+                      - if @cart.line_items.pluck(:product_id).include?(product.id)
+                        = link_to '', cart_path, class: 'in-cart'
+                      - else
+                        = link_to '', add_part_cart_path, remote: true, method: :post, data: {product_id: product.id}
+
+        .pagination
+          = paginate params[:where] == 'catalog' ? @partpictures : @products
+
+      - else
+
+        .content-with-padding
+          .search-not-found
+            .title Товар не найден
+
+            %ul
+              %li Проверьте заданные вами параметры поиска.
+              %li Воспользуйтесь справочной системой #{link_to 'Автокаталог', catalog_index_path} и найдите деталь в каталоге чертежей.
+              %li Вы можете оформить ваш заказ в произвольно форме, мы свяжемся с вами и уточним детали.
+
+        .content-with-padding.full
+          .catalog-list-delim
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

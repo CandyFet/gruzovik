@@ -1,0 +1,33 @@
+#header
+  .main-wrapper.clearfix
+    .logo
+      - if current_page?(root_path)
+        = image_tag('logo.png')
+      - else
+        = link_to image_tag('logo.png'), root_path
+    .contacts
+      .item
+        .icon= image_tag('icons/phone.png')
+        .content
+          .title Телефон для связи
+          .value= raw MainText.get_content('phone')
+          .services
+            = link_to 'Viber', 'viber://add?number=79322007688', style: 'margin-right: 27px;'
+            = link_to 'WhatsApp', 'whatsapp://send?text=&phone=79322007688'
+      .item
+        .icon= image_tag('icons/location.png')
+        .content
+          .title Адрес офиса
+          .value= raw MainText.get_content('address')
+    .cart
+      .in
+        .item
+          .icon= link_to image_tag('icons/cart.png'), cart_path
+          .content
+            .title Запчастей
+            .value= link_to "#{@cart.line_items.count > 0 ? @cart.line_items.count : 'Не добавлено'}", cart_path
+
+      .link
+        = link_to 'Оформить заявку', new_orders_path
+
+

@@ -1,0 +1,3 @@
+%ul{id: "part-list-#{params[:model]}-#{params[:group]}"}
+  - @parts.each do |part|
+    %li= link_to part.GROUPNAME, product_path("#{part.IDMODEL}-#{part.GROUPNO}"), data: {model: part.IDMODEL, group: part.GROUPNO}

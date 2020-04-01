@@ -1,0 +1,10 @@
+// specific for current project
+
+//#modal .has_and_belongs_to_many_association_type[id^=project_partner_project_ids],
+//.belongs_to_association_type[id^=product_images_attributes],
+//.polymorphic_association_type[id^=page_images_attributes],
+//.belongs_to_association_type[id^=activity_experts_attributes],
+//.belongs_to_association_type[id^=expert_articles_attributes],
+.belongs_to_association_type[id^=news_images_attributes] {
+  display: none;
+}

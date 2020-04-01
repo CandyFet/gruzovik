@@ -1,0 +1,18 @@
+%table.standard
+  %thead
+    %tr
+      - if @type.present?
+        %th Марка
+      %th Модель
+      %th Название по автокаталогу
+      %th Чертеж
+  %tbody
+    - partpictures.each do |partpicture|
+      %tr{class: cycle('odd', 'even', name: 'tab-1-list')}
+        - if @type.present?
+          %td.gray= link_to partpicture.partname.mark.NAMESHORT, mark_catalog_index_path(partpicture.partname.mark, type: @type.id)
+        -#- else
+        -#  %td.gray= link_to partpicture.partname.mark.NAMESHORT, mark_catalog_index_path(partpicture.partname.mark, type: partpicture.model.TYPEAUTO)
+        %td.gray= link_to partpicture.model.NAMESHORT, model_catalog_index_path(partpicture.IDMODEL)
+        %td= link_to partpicture.partname.NAME, part_product_path("#{partpicture.IDMODEL}-#{partpicture.IDGROUP}", partpicture.partname)
+        %td.gray= link_to Grouptree.find_by(IDMODEL: partpicture.IDMODEL, GROUPNO: partpicture.IDGROUP).try(:GROUPNAME), product_path("#{partpicture.IDMODEL}-#{partpicture.IDGROUP}", active: partpicture.ID)

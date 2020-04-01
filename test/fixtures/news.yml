@@ -1,0 +1,8 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+first:
+  name: First News 2
+  slug: first-news
+  published_at: 2015-08-30
+  image: rails.jpg
+  content: Big first news content

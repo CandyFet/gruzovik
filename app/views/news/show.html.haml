@@ -1,0 +1,16 @@
+= render 'shared/catalog_form'
+
+.simple-page
+  %h1= @news.name
+
+  .image= link_to image_tag(@news.image.big), @news.image.url, data: {lightbox: 'main-image'}
+
+  .editor-text= raw @news.content
+
+  - if @news.images.any?
+    .big-slider
+      .carousel
+        - @news.images.each do |image|
+          .item= link_to image_tag(image.file.big), image.file.url, data: {lightbox: 'big-slide'}
+      .arrow.prev
+      .arrow.next

@@ -1,0 +1,23 @@
+- content_for :under_wrapper do
+  .promotions-block
+    .main-wrapper
+      .promotion-carousel
+        .carousel
+          - @promotions.each_with_index do |promotion, i|
+            .item{id: "promotion-#{i}"}
+              .wrapper
+                .title= promotion.name
+                - if promotion.content?
+                  .content= raw promotion.content
+                - if promotion.slug?
+                  .link= link_to 'Смотреть каталог', price_catalog_index_path(promotion: promotion.slug)
+        .arrow.prev
+        .arrow.next
+        .promotions-preview.clearfix
+          - @promotions.each_with_index do |promotion, i|
+            = link_to "#promotion-#{i}", class: "#{'selected' if i.zero?}" do
+              .title= promotion.name
+              .date= l(promotion.published_at, format: :full_date)
+
+  = render 'pages/map'
+

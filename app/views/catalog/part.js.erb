@@ -1,0 +1,11 @@
+var $group = $('.categories-list a[data-group="<%= params[:group] %>"][data-model="<%= params[:model] %>"]');
+
+if ($group.hasClass('active')) {
+  $('#part-list-<%= params[:model] %>-<%= params[:group] %>').remove();
+  $('#dpart-list-<%= params[:model] %>-<%= params[:group] %>').remove();
+  $group.removeClass('active');
+} else {
+  $group.addClass('active');
+  $group.after('<%= j(render 'parts') %>');
+  $('.parts-drawings').prepend('<%= j(render 'parts_drawings') %>');
+}

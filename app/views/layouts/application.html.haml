@@ -1,0 +1,23 @@
+!!!
+%html
+  %head
+    = render 'shared/head'
+  %body{data: {ver: '0.0.2'}}
+    .page-wrap
+      = render 'shared/header'
+      = render 'shared/menu'
+      = yield :above_wrapper
+      .main-wrapper
+        = yield
+      = yield :under_wrapper
+
+    = render 'shared/footer'
+
+    = render 'shared/map_shops'
+
+    = render 'layouts/metric'
+
+    - if controller_name != 'orders'
+      = link_to new_orders_path, id: 'link-to-cart' do
+        = image_tag('icons/paper-plane.png')
+        Оформить заявку

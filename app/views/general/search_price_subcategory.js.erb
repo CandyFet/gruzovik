@@ -1,0 +1,4 @@
+$('.catalog-search-form .select-box[data-where="price"] .select.category').html('<%= j(render 'shared/catalog_form_select_price_subcategory', subcategories: @subcategories) %>');
+$('.catalog-search-form .select-box[data-where="price"] .select.group').html('<%= j(render 'shared/catalog_form_select_price_lastcategory', lastcategories: Category.none) %>');
+
+$(' .select-box[data-where="price"] .select.category select.styler, .select-box[data-where="price"] .select.group select.styler').styler();

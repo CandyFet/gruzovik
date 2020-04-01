@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+phone:
+  name: Телефон
+  slug: phone
+  content: 111111
+
+address:
+  name: Адрес
+  slug: address
+  content: Ульяновск

@@ -1,0 +1,6 @@
+- if @cart.line_items.pluck(:PARTNAMEID).include?(partname.ID)
+  = link_to image_tag('icons/to_cart_white.png'), cart_path
+  = link_to 'В корзине', cart_path
+- else
+  = link_to image_tag('icons/to_cart_white.png'), add_part_cart_path, remote: true, method: :post, data: {id: partname.ID, model: model.ID, grouptree: grouptree.GROUPNO}
+  = link_to 'Добавить', add_part_cart_path, remote: true, method: :post, data: {id: partname.ID, model: model.ID, grouptree: grouptree.GROUPNO}

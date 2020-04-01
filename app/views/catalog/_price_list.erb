@@ -1,0 +1,20 @@
+<div class="block-column-wrapper">
+  <div class="column-title">Прайс лист</div>
+  <% @categories.each do |category| %>
+    <div class="block-type block-price-categories <%= 'no-children' unless category.has_children? %> <%= 'active' if category == @category %>">
+      <div class="header"><%= link_to category.name, price_catalog_index_path(category: category.id), class: 'category-link' %><%= link_to '', '#', class: 'show-more' %></div>
+      <div class="marks-list" style="<%= 'display: none;' if category != @category %>">
+        <% category.children.each do |subcategory| %>
+          <%= link_to subcategory.name, price_catalog_index_path(category: category.id, subcategory: subcategory.id), class: "category-link #{'active' if subcategory == @subcategory}" %>
+          <% if @subcategory.present? && subcategory == @subcategory && @subcategory.has_children? %>
+            <div class="last-categories-list">
+              <% subcategory.children.each do |lastcategory| %>
+                <%= link_to lastcategory.name, price_catalog_index_path(category: category.id, subcategory: subcategory.id, lastcategory: lastcategory.id), class: "#{'active' if lastcategory == @lastcategory}" %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

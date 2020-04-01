@@ -1,0 +1,19 @@
+<% if @new_cart_partname.valid? %>
+  <% if params[:list] == '1' %>
+    <% if @new_cart_partname.product_id? %>
+      $('.catalog-list-part-<%= @product.id %>').html('<%= link_to '', cart_path, class: 'in-cart' %>');
+    <% else %>
+      $('.catalog-list-part-<%= @partname.ID %>').html('<%= link_to '', cart_path, class: 'in-cart' %>');
+    <% end %>
+  <% elsif params[:list] == '2' %>
+    $('.catalog-list-tile-part-<%= @partname.ID %>').html('<%= link_to '', cart_path, class: 'to-cart in-cart' %>');
+  <% else %>
+    <% if @new_cart_partname.product_id? %>
+      $('.payment-column .to-cart').html('<%= j(render('products/to_cart_link_product', product: @product)) %>');
+    <% else %>
+      $('.payment-column .to-cart').html('<%= j(render('products/to_cart_link', partname: @partname)) %>');
+    <% end %>
+  <% end %>
+<% end %>
+
+$('#header .cart .value').text('<%= @cart.line_items.count > 0 ? @cart.line_items.count : 'Не добавлено' %>');

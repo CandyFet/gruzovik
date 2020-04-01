@@ -1,0 +1,39 @@
+<div class="block-column-wrapper">
+  <div class="column-title">Автокаталог</div>
+  <% @types.each do |type| %>
+    <div class="block-type <%= 'active' if type == @type %>">
+      <div class="header"><%= type.name %></div>
+      <div class="marks-list marks-list-type-<%= type.id %>" style="<%= 'display: none;' if type != @type %>">
+        <% type.marks.each_with_index do |mark, i| %>
+
+          <% if i == 0 %>
+            <div class="visible-marks">
+          <% end %>
+          <% if i == (type.sort == 0 ? 4 : type.sort == 1 ? 10 : 8) %>
+            <div class="invisible-marks">
+          <% end %>
+
+          <%= link_to mark.NAMESHORT, mark_catalog_index_path(mark, type: type), class: "mark-link #{'active' if mark == @mark}" %>
+
+          <% if i == (type.sort == 0 ? 3 : type.sort == 1 ? 9 : 7) %>
+            </div>
+          <% end %>
+
+        <% end %>
+
+        </div>
+
+        <div class="more-marks">
+          <%= link_to "#{image_tag('icons/expand_gray.png')}<span>Показать все марки</span>".html_safe, '#' %>
+        </div>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      if ($('.marks-list-type-<%= type.id %> .invisible-marks .mark-link.active').length) {
+        $('.marks-list-type-<%= type.id %> .invisible-marks').show().closest('.marks-list').find('.more-marks a').addClass('active').find('span').text('Скрыть марки')
+      }
+    </script>
+  <% end %>
+</div>

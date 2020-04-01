@@ -1,0 +1,5 @@
+- if models.any?
+  = select_tag :q_model, options_from_collection_for_select(models, 'ID', 'NAMESHORT', params[:q_model]), include_blank: 'Все автомобили', class: 'styler', data: {placeholder: 'МОДЕЛЬ АВТОМОБИЛЯ', path: search_model_path}
+- else
+  = select_tag :q_model, options_from_collection_for_select(models, 'ID', 'NAMESHORT'), include_blank: true, class: 'styler', data: {placeholder: 'МОДЕЛЬ АВТОМОБИЛЯ', path: search_model_path}, disabled: true
+

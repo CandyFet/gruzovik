@@ -1,0 +1,162 @@
+= render 'shared/catalog_form'
+
+= render 'shared/breadcrumbs', bc: [['Каталог', catalog_index_path], ["#{@type.name} - #{@mark.NAMESHORT}", mark_catalog_index_path(@mark, type: @type)], [@model.NAMESHORT, model_catalog_index_path(@model)], ["#{@grouptree.GROUPNAME} #{@model.NAMESHORT}", product_path("#{@grouptree.IDMODEL}-#{@grouptree.GROUPNO}")]]
+
+- content_for :under_wrapper do
+
+  .product-detail
+    .main-wrapper
+
+      .red-wrapper
+        %h1= @partname.NAME
+
+        - if @partname.NUMBER?
+          .skus
+            %span
+              Артикул
+              %strong= @partname.NUMBER
+
+          - if false
+            %span
+              Код товара
+              %strong 985 23 65
+
+      .skus
+        %span
+          Каталожная группа
+          %strong= @grouptree.GROUPNAME
+
+    .main-information
+      .main-wrapper.clearfix
+        - if @partname.info.image?
+          .slider-column
+            .slider
+              .carousel
+                .item{id: "product-slide-1"}
+                  = link_to image_tag(@partname.info.image.big), image_path(@partname.info.image.url), data: {lightbox: 'product-images'}
+
+            - if false
+              .thumbs-wrapper
+                - 5.times do |i|
+                  = link_to "#product-slide-#{i}", class: "#{'selected' if i.zero?}" do
+                    .bgr
+                    .image= image_tag('examples/product_thumb.png')
+                    .line
+        .info-column
+          - if false
+            .title Технические характеристики
+            %ul
+              %li
+                %span.name
+                  %span.wrap Торговая марка
+                %span.value= @mark.NAMESHORT
+
+              %li
+                %span.name
+                  %span.wrap Модель автомобиля
+                %span.value= @model.NAMESHORT
+
+              - if @partname.info.width?
+                %li
+                  %span.name
+                    %span.wrap Ширина, м
+                  %span.value= @partname.info.width
+
+              - if @partname.info.height?
+                %li
+                  %span.name
+                    %span.wrap Высота, м
+                  %span.value= @partname.info.height
+
+              - if @partname.info.length?
+                %li
+                  %span.name
+                    %span.wrap Длинна, м
+                  %span.value= @partname.info.length
+
+              - if false
+                %li
+                  %span.name
+                    %span.wrap Вес, кг
+                  %span.value 27
+
+            - if @partname.info.description.present?
+              .title Описание
+              .editor-text= raw @partname.info.description
+
+        .payment-column
+          - if @partname.info.price > 0
+            .add-to-cart
+              .price
+                = number_with_delimiter(@partname.info.price)
+                %span.rub Р
+              .price-unit
+                Цена за шт
+              .amount.can-change
+                %span
+                  = link_to image_tag('icons/decrease_black.png'), '#', data: {value: '-1'}
+                  = text_field_tag :amount, 1
+                  = link_to image_tag('icons/increase_black.png'), '#', data: {value: '1'}
+              .to-cart
+                = render 'to_cart_link', partname: @partname, model: @model, grouptree: @grouptree
+              .bottom
+            = render 'shared/modals_delivery_payment', variant: 2
+          - else
+            %div{style: 'height: 199px; padding-top: 35px;'}
+              = render 'shared/modals_delivery_payment', variant: 2
+
+    .main-wrapper{style: 'width: 800px'}
+      .detail-information.clearfix{style: 'margin-left: -80px; margin-right: 90px; margin-top: -400px;'}
+        .tabs.clearfix
+          - if @partpictures.any?
+            .tab{style: 'width: 165px;'}= link_to 'Применяемость', '#tab-1', class: 'active'
+          - if @partpictures_similar.any?
+            .tab{style: 'width: 260px;'}= link_to 'Сопутствующие товары', '#tab-2'
+        .content-tabs
+          #tab-1.content-tab.cleearfix
+            - if @partpictures.any?
+              = render 'parts', partpictures: @partpictures
+          - if @partpictures_similar.any?
+            #tab-2.content-tab.cleafix
+              = render 'parts', partpictures: @partpictures_similar
+
+              - if false
+                .left-column
+                  %table.standard
+                    %thead
+                      %tr
+                        %th №
+                        %th Номер
+                        %th Название
+                        %th Кол-во<br>на модель
+                        %th Цена
+                    %tbody
+                      - 12.times do |i|
+                        %tr{class: cycle('odd', 'even', name: 'tab-1-list')}
+                          %td= i + 1
+                          %td.gray 375-8402530-01
+                          %td= link_to 'Наименование товара вполне может не умещаться в одну строку, а то и в две или три', '#'
+                          %td.gray 5
+                          %td.price
+                            %span.nowrap
+                              = number_with_delimiter(7890)
+                              %span Р
+                .right-column
+                  = link_to image_tag('examples/scheme.png'), image_path('examples/scheme.png'), data: {lightbox: 'scheme'}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

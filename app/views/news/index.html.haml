@@ -1,0 +1,13 @@
+= render 'shared/catalog_form'
+
+%h1 Новости
+
+.news-list.clearfix
+
+  - @news.each do |news|
+    .news{class: cycle('first', 'second', 'third', name: 'news-list')}
+      .image= link_to image_tag(news.image.preview), news
+      .content
+        .title= link_to truncate(news.name, length: 88), news
+        .date= l(news.published_at, format: :full_date)
+    = cycle('', '', '<div class="clear"></div>'.html_safe, name: 'news-list-clear')

@@ -1,0 +1,42 @@
+#footer
+  .main-wrapper
+    .copyright
+      © #{Time.now.year} «МАШТОРГ»
+      .delivery-payment
+        = link_to 'Условия доставки', '#modal-footer-delivery', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+        ·
+        = link_to 'Условия оплаты', '#modal-footer-payment', class: 'open-popup-link', data: {effect: 'mfp-zoom-in'}
+    .contacts
+      .item
+        .icon= image_tag('icons/phone_gray.png')
+        .content
+          .title Телефон для связи
+          .value= raw MainText.get_content('phone')
+      .item
+        .icon= image_tag('icons/location_gray.png')
+        .content
+        .content
+          .title Адрес офиса
+          .value= raw MainText.get_content('address')
+      - if action_name !~ /sto|carwash|rental/ && controller_name !~ /promotions/ && @page.try(:slug) != 'contacts'
+        .item.show-shops-map
+          .icon= image_tag('icons/show.png')
+          .content
+          .content
+            .title Показать
+            .value Магазины на карте
+    .developer
+      = link_to image_tag('logo_developer.png'), 'http://p6group.ru', target: '_blank'
+
+- delivery = Page.active.find_by(slug: 'delivery')
+- payment = Page.active.find_by(slug: 'payment')
+
+- if delivery.present?
+  #modal-footer-delivery.white-popup.mfp-hide.mfp-with-anim
+    .title= delivery.name
+    .editor-text= raw delivery.content
+
+- if payment.present?
+  #modal-footer-payment.white-popup.mfp-hide.mfp-with-anim
+    .title= payment.name
+    .editor-text= raw payment.content

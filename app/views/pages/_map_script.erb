@@ -1,0 +1,61 @@
+<script>
+  function initialize() {
+    var mapCanvas = document.getElementById('<%= id %>');
+    var mapOptions = {
+      center: <% if defined?(all_shops) && all_shops %> new google.maps.LatLng(57.147131040668976, 65.53892297879031) <% else %> new google.maps.LatLng(57.17443527122246, 65.44215149999997) <% end %>,
+      zoom: 12,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: true,
+      zoomControl: true,
+      scrollwheel: false
+    };
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+
+    var image = '<%= image_path('icons/marker.png') %>';
+
+    var infowindow = new google.maps.InfoWindow({
+      content: '<%= link_to image_tag('shops/firmen_mini.jpg'), image_path('shops/firmen.jpg'), data: {lightbox: 'shop-1'} %><br>ул. Фирменная, 1'
+//      content: 'ул. Фирменная, 1'
+    });
+    var marker = new google.maps.Marker({
+      position: {lat: 57.17443527122246, lng: 65.44215149999997},
+      map: map,
+      icon: image
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+
+    <% if defined?(all_shops) && all_shops %>
+
+    var infowindow2 = new google.maps.InfoWindow({
+      content: '<%= link_to image_tag('shops/fedunsk_mini.jpg'), image_path('shops/fedunsk.jpg'), data: {lightbox: 'shop-2'} %><br>ул. Федюнинского, 19'
+      //      content: 'ул. Федюнинского, 19'
+    });
+    var marker2 = new google.maps.Marker({
+      position: {lat: 57.11661477153514, lng: 65.53171350000001},
+      map: map,
+      icon: image
+    });
+    marker2.addListener('click', function() {
+      infowindow2.open(map, marker2);
+    });
+
+    var infowindow3 = new google.maps.InfoWindow({
+      content: '<%= link_to image_tag('shops/avtoremont_mini.jpg'), image_path('shops/avtoremont.jpg'), data: {lightbox: 'shop-3'} %><br>ул. Авторемонтная, 12'
+      //      content: 'ул. Авторемонтная, 12'
+    });
+    var marker3 = new google.maps.Marker({
+      position: {lat: 57.156639, lng: 65.465221},
+      map: map,
+      icon: image
+    });
+    marker3.addListener('click', function() {
+      infowindow3.open(map, marker3);
+    });
+
+    <% end %>
+
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>

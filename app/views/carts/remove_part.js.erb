@@ -1,0 +1,4 @@
+$('#line-item-<%= params[:id] %>').remove();
+$('#basket-total-sum').html('<%= number_with_delimiter(@cart.line_items.total_sum) %>');
+
+$('#header .cart .value').text('<%= @cart.line_items.count > 0 ? @cart.line_items.count : 'Не добавлено' %>');

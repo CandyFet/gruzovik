@@ -1,0 +1,37 @@
+- content_for :under_wrapper do
+  .main-block.page-carwash
+    .main-wrapper.clearfix
+      .left-column.inner
+        .text
+          Автомойка
+        .editor-text.main-scrollable
+          = raw Page.get_content('carwash')
+        .bottom
+          .info-blocks.clearfix
+            - if MainText.has_content?('carwash_phone')
+              .info-block
+                .icon
+                  = image_tag('icons/phone_red.png')
+                .content
+                  Телефон
+                  .value
+                    = raw MainText.get_content('carwash_phone')
+            - if MainText.has_content?('carwash_address')
+              .info-block
+                .icon
+                  = image_tag('icons/location_red.png')
+                .content
+                  Адрес станции
+                  .value
+                    = raw MainText.get_content('carwash_address')
+          .hint
+            = image_tag('icons/important.png')
+            Получите скидку на услуги покупая в нашем
+            = link_to 'интернет-магазине', catalog_index_path
+      .right-column.black
+        .title Корпоративным клиентам
+        .hint После заполнения формы с вами свяжется менеджер по указанному телефону для уточнения информации.
+        .form
+          = render 'forms/form_carwash'
+
+  = render 'map'

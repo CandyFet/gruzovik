@@ -1,0 +1,11 @@
+= form_for @rental, url: forms_rental_path, remote: true, html: {autocomplete: 'off'} do |f|
+  .input
+    = f.phone_field :name, placeholder: 'КАК ВАС ЗОВУТ'
+  .input
+    = f.phone_field :phone, placeholder: 'НОМЕР ТЕЛЕФОНА'
+  .input
+    = f.email_field :email, placeholder: 'ЭЛ. ПОЧТА'
+  .input
+    = f.text_field :message, placeholder: 'КОММЕНТАРИЙ'
+  .action
+    = submit_tag 'Отправить', name: nil
