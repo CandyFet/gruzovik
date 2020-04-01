@@ -147,7 +147,7 @@ GEM
     mini_magick (4.3.3)
     mini_portile (0.6.2)
     minitest (5.8.1)
-    multi_json (1.11.2)
+    multi_json (1.14.1)
     mysql2 (0.3.20)
     nested_form (0.3.2)
     net-scp (1.2.1)
@@ -159,7 +159,7 @@ GEM
     orm_adapter (0.5.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
-    rack (1.6.4)
+    rack (1.6.13)
     rack-pjax (0.8.0)
       nokogiri (~> 1.5)
       rack (~> 1.1)
@@ -234,7 +234,7 @@ GEM
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
     sexp_processor (4.6.0)
-    sprockets (2.12.3)
+    sprockets (2.12.5)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -305,7 +305,7 @@ DEPENDENCIES
   russian
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
-  sprockets (= 2.12.3)
+  sprockets (= 2.12.5)
   sprockets-rails (= 2.2.4)
   sqlite3
   therubyracer
